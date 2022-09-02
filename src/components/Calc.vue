@@ -12,6 +12,7 @@
         v-for="operation of operations"
         @click="calculate(operation)"
         :key="operation"
+        :disabled="op1==='' || op2===''"
       >
         {{operation}}
       </button>
@@ -22,6 +23,35 @@
 <!--      <button @click="calculate('^')" title="Степень">^</button>-->
 <!--      <button @click="calculate('//')" title="Целочисленное деление">//</button>-->
     </div>
+    <br>
+    <input type="checkbox" id="checkbox" v-model="showKeyboard">
+    <label for="checkbox">Отобразить экранную клавиатуру</label>
+    <br>
+    <div v-show="showKeyboard" class="keyboard">
+      <button
+        @click="minus"
+      >
+        -
+      </button>
+      <button
+        v-for="n in 10"
+        :key="n"
+        @click="inputOperand(n-1)"
+      >
+        {{ n-1 }}
+      </button>
+      <button
+        @click="backspase"
+      >
+        &larr;
+      </button>
+      <br>
+      <input type="radio" id="op1" value="op1" v-model="selectedOperand">
+      <label for="op1">Операнд 1</label>
+      <input type="radio" id="op2" value="op2" v-model="selectedOperand">
+      <label for="op2">Операнд 2</label>
+    </div>
+    <br>
     <div class="logs">
       {{ logs }}
     </div>
@@ -87,11 +117,23 @@ export default {
         return
       }
       this.result = Math.trunc(op1 / op2)
+    },
+    inputOperand (value) {
+      console.log(value)
+      this[this.selectedOperand] = Number('' + this[this.selectedOperand] + value)
+    },
+    backspase () {
+      this[this.selectedOperand] = Math.trunc(this[this.selectedOperand] / 10)
+    },
+    minus () {
+      this[this.selectedOperand] = this[this.selectedOperand] * -1
     }
   }
 }
 </script>
 
 <style module>
-
+  button {
+    margin: 2px;
+  }
 </style>
