@@ -16,12 +16,6 @@
       >
         {{operation}}
       </button>
-<!--      <button @click="calculate('+')" title="Сумма">+</button>-->
-<!--      <button @click="calculate('-')" title="Вычитание">-</button>-->
-<!--      <button @click="calculate('*')" title="Умножение">*</button>-->
-<!--      <button @click="calculate('/')" title="Деление">/</button>-->
-<!--      <button @click="calculate('^')" title="Степень">^</button>-->
-<!--      <button @click="calculate('//')" title="Целочисленное деление">//</button>-->
     </div>
     <br>
     <input type="checkbox" id="checkbox" v-model="showKeyboard">

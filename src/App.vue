@@ -1,46 +1,86 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-
-    <Calc />
-<!--    <Calc v-if="show" :key="1"/>-->
-<!--    <Calc v-if="!show" :key="2"/>-->
-<!--    <button @click="show=!show">click</button>-->
+    <header>
+      <h1>My personal costs</h1>
+    </header>
+    <main>
+      <button
+        :class="this.$style.showFormBtn"
+        @click="showForm = !showForm"
+      >
+        ADD NEW COST +
+      </button>
+      <AddPaymentForm
+        v-show="showForm"
+        @add-payment="addPayment"
+      />
+      <PaymentsDisplay
+        :paymentsList="paymentsList"
+        show
+      />
+    </main>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Calc from '@/components/Calc.vue'
+import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
+import AddPaymentForm from '@/components/AddPaymentForm'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    Calc
+    PaymentsDisplay,
+    AddPaymentForm
   },
   data: () => ({
-    counter: 0,
-    txt: '',
-    show: true
+    paymentsList: [],
+    showForm: false
   }),
   methods: {
-    increase (step, event) {
-      console.log(event)
-      this.counter += step
+    fetchPaymentsData () {
+      return [
+        {
+          date: '28.03.2020',
+          category: 'Food',
+          value: 169
+        },
+        {
+          date: '24.03.2020',
+          category: 'Transport',
+          value: 360
+        },
+        {
+          date: '24.03.2020',
+          category: 'Food',
+          value: 532
+        }
+      ]
+    },
+    addPayment (data) {
+      this.paymentsList.push(data)
     }
+  },
+  created () {
+    this.paymentsList = this.fetchPaymentsData()
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" module>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+header {
+  padding-left: 20px;
+}
+.showFormBtn {
+  background-color: #5ea899;
+  color: white;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 </style>
