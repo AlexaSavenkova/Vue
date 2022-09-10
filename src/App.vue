@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <h1>My personal costs</h1>
+      <h1>My personal costs: {{ totalCost }}</h1>
     </header>
     <main>
       <button
@@ -13,6 +13,7 @@
       <AddPaymentForm
         v-show="showForm"
         @add-payment="addPayment"
+        :categoryList="categoryList"
       />
       <PaymentsDisplay
         :paymentsList="paymentsList"
@@ -25,6 +26,7 @@
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
 import AddPaymentForm from '@/components/AddPaymentForm'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -33,35 +35,23 @@ export default {
     AddPaymentForm
   },
   data: () => ({
-    paymentsList: [],
     showForm: false
   }),
+  computed: {
+    ...mapGetters(['paymentsList', 'categoryList', 'totalCost'])
+  },
   methods: {
-    fetchPaymentsData () {
-      return [
-        {
-          date: '28.03.2020',
-          category: 'Food',
-          value: 169
-        },
-        {
-          date: '24.03.2020',
-          category: 'Transport',
-          value: 360
-        },
-        {
-          date: '24.03.2020',
-          category: 'Food',
-          value: 532
-        }
-      ]
-    },
+    ...mapActions(['fetchData', 'fetchCategoryData']),
+    ...mapMutations(['ADD_PAYMENT_DATA']),
     addPayment (data) {
-      this.paymentsList.push(data)
+      // this.$store.commit('ADD_PAYMENT_DATA', data)
+      this.ADD_PAYMENT_DATA(data)
     }
   },
   created () {
-    this.paymentsList = this.fetchPaymentsData()
+    // this.$store.dispatch('fetchData')
+    this.fetchData()
+    this.fetchCategoryData()
   }
 }
 </script>
