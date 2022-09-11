@@ -1,46 +1,76 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-
-    <Calc />
-<!--    <Calc v-if="show" :key="1"/>-->
-<!--    <Calc v-if="!show" :key="2"/>-->
-<!--    <button @click="show=!show">click</button>-->
+    <header>
+      <h1>My personal costs: {{ totalCost }}</h1>
+    </header>
+    <main>
+      <button
+        :class="this.$style.showFormBtn"
+        @click="showForm = !showForm"
+      >
+        ADD NEW COST +
+      </button>
+      <AddPaymentForm
+        v-show="showForm"
+        @add-payment="addPayment"
+        :categoryList="categoryList"
+      />
+      <PaymentsDisplay
+        :paymentsList="paymentsList"
+        show
+      />
+    </main>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Calc from '@/components/Calc.vue'
+import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
+import AddPaymentForm from '@/components/AddPaymentForm'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    Calc
+    PaymentsDisplay,
+    AddPaymentForm
   },
   data: () => ({
-    counter: 0,
-    txt: '',
-    show: true
+    showForm: false
   }),
+  computed: {
+    ...mapGetters(['paymentsList', 'categoryList', 'totalCost'])
+  },
   methods: {
-    increase (step, event) {
-      console.log(event)
-      this.counter += step
+    ...mapActions(['fetchData', 'fetchCategoryData']),
+    ...mapMutations(['ADD_PAYMENT_DATA']),
+    addPayment (data) {
+      // this.$store.commit('ADD_PAYMENT_DATA', data)
+      this.ADD_PAYMENT_DATA(data)
     }
+  },
+  created () {
+    // this.$store.dispatch('fetchData')
+    this.fetchData()
+    this.fetchCategoryData()
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" module>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+header {
+  padding-left: 20px;
+}
+.showFormBtn {
+  background-color: #5ea899;
+  color: white;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
 </style>
