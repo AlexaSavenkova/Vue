@@ -16,8 +16,12 @@
         :categoryList="categoryList"
       />
       <PaymentsDisplay
-        :paymentsList="paymentsList"
-        show
+        :paymentsList="currentPage"
+      />
+      <Pagination
+        :totalPages="totalPages"
+        :currentPageNumber="currentPageNumber"
+        @get-page="getPage"
       />
     </main>
   </div>
@@ -26,32 +30,51 @@
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
 import AddPaymentForm from '@/components/AddPaymentForm'
+import Pagination from '@/components/Pagination'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     PaymentsDisplay,
-    AddPaymentForm
+    AddPaymentForm,
+    Pagination
   },
   data: () => ({
-    showForm: false
+    showForm: false,
+    linesPerPage: 3,
+    currentPageNumber: 1
   }),
   computed: {
-    ...mapGetters(['paymentsList', 'categoryList', 'totalCost'])
+    ...mapGetters(['paymentsList', 'categoryList', 'totalCost', 'currentPage']),
+    totalPages () {
+      return Math.ceil(this.paymentsList.length / this.linesPerPage)
+    }
   },
   methods: {
-    ...mapActions(['fetchData', 'fetchCategoryData']),
+    ...mapActions(['fetchData', 'fetchCategoryData', 'fetchPage']),
     ...mapMutations(['ADD_PAYMENT_DATA']),
     addPayment (data) {
       // this.$store.commit('ADD_PAYMENT_DATA', data)
       this.ADD_PAYMENT_DATA(data)
+      this.getPage(this.currentPageNumber)
+    },
+    getPage (number) {
+      this.currentPageNumber = number
+      const start = this.linesPerPage * (number - 1)
+      const end = start + this.linesPerPage
+      const payload = {
+        start,
+        end
+      }
+      this.fetchPage(payload)
     }
   },
   created () {
     // this.$store.dispatch('fetchData')
     this.fetchData()
     this.fetchCategoryData()
+    setTimeout(() => this.getPage(1), 1000)
   }
 }
 </script>
