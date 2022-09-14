@@ -25,8 +25,8 @@ export default {
     paymentsList: {
       type: Array,
       default: () => ([])
-    },
-    show: Boolean
+    }
+    // show: Boolean
   }
 }
 </script>
