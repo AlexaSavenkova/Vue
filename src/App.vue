@@ -1,66 +1,31 @@
 <template>
   <div id="app">
     <header class="header">
-<!--      <nav @click.prevent="pushHistory($event)">-->
       <nav>
-<!--        <a href="/#dashboard" class="router-link">Dashboard</a>-->
-<!--        <a href="/#about" class="router-link">About</a>-->
-<!--        <a href="/#notfound" class="router-link">Not Found</a>-->
-<!--        <a href="/dashboard" class="router-link">Dashboard</a>-->
-<!--        <a href="/about" class="router-link">About</a>-->
-<!--        <a href="/notfound" class="router-link">Not Found</a>-->
         <router-link to="dashboard" class="router-link">Dashboard</router-link>
         <router-link to="about" class="router-link">About</router-link>
-        <router-link to="notfound" class="router-link">Not Found</router-link>
       </nav>
     </header>
     <main>
-<!--      <About v-if="page==='about'"/>-->
-<!--      <NotFound v-if="page==='notfound'"/>-->
-<!--      <Dashboard v-if="page==='dashboard'"/>-->
       <router-view />
-      <button @click="goToPage">About</button>
     </main>
   </div>
 </template>
 
 <script>
-// import About from '../pages/About'
-// import NotFound from '../pages/NotFound'
-// import Dashboard from '../pages/Dashboard'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'App',
   components: {
-    // About,
-    // Dashboard,
-    // NotFound
   },
   data: () => ({
     // page: 'dashboard'
   }),
   methods: {
-    goToPage () {
-      // this.$router.push('about')
-      this.$router.push({
-        name: 'about',
-        params: {
-          a: 'qwerty'
-        }
-      })
-    }
-    // setPage () {
-    //   // this.page = window.location.hash.slice(1)
-    //   this.page = window.location.pathname.slice(1)
-    //   console.log(this.page)
-    // },
-    // pushHistory (e) {
-    //   if (!e.target.classList.contains('route-link')) return
-    //   window.history.pushState({}, '', e.target.href)
-    //   this.setPage()
-    // }
+    ...mapActions(['fetchData'])
   },
   mounted () {
+    this.fetchData()
     // window.addEventListener('hashchange', this.setPage)
     // window.addEventListener('popstate', this.setPage)
     // console.log(this.$router)

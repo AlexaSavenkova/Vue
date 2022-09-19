@@ -2,7 +2,6 @@
   <div :class="this.$style.main">
     <div :class="this.$style.form">
       <input type="text" placeholder="Payment Amount" v-model.number="value">
-<!--      <input type="text" placeholder="Payment Description" v-model="category">-->
       <select v-model="category">
         <option value="" disabled selected hidden>Payment Description</option>
         <option
