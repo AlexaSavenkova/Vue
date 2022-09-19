@@ -3,15 +3,10 @@
     <h1>My personal costs: {{ totalCost }}</h1>
     <button
       :class="this.$style.showFormBtn"
-      @click="showForm = !showForm"
+      @click="goToAddPaymentPage"
     >
       ADD NEW COST +
     </button>
-    <AddPaymentForm
-      v-show="showForm"
-      @add-payment="addPayment"
-      :categoryList="categoryList"
-    />
     <PaymentsDisplay
       :paymentsList="currentPage"
     />
@@ -25,52 +20,46 @@
 
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
-import AddPaymentForm from '@/components/AddPaymentForm'
 import Pagination from '@/components/Pagination'
-import { mapActions, mapMutations, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dashboard',
   components: {
     PaymentsDisplay,
-    AddPaymentForm,
     Pagination
   },
   data: () => ({
     showForm: false,
-    linesPerPage: 3,
+    linesPerPage: 5,
     currentPageNumber: 1
   }),
   computed: {
-    ...mapGetters(['paymentsList', 'categoryList', 'totalCost', 'currentPage']),
+    ...mapGetters(['paymentsList', 'totalCost']),
+    currentPage () {
+      const start = this.linesPerPage * (this.currentPageNumber - 1)
+      const end = start + this.linesPerPage
+      return this.paymentsList.slice(start, end)
+    },
     totalPages () {
       return Math.ceil(this.paymentsList.length / this.linesPerPage)
     }
   },
   methods: {
-    ...mapActions(['fetchData', 'fetchCategoryData', 'fetchPage']),
-    ...mapMutations(['ADD_PAYMENT_DATA']),
-    addPayment (data) {
-      // this.$store.commit('ADD_PAYMENT_DATA', data)
-      this.ADD_PAYMENT_DATA(data)
-      this.getPage(this.currentPageNumber)
-    },
     getPage (number) {
       this.currentPageNumber = number
-      const start = this.linesPerPage * (number - 1)
-      const end = start + this.linesPerPage
-      const payload = {
-        start,
-        end
-      }
-      this.fetchPage(payload)
+    },
+    goToAddPaymentPage () {
+      this.$router.push({
+        name: 'add_payment'
+        // params: {
+        //   a: 'qwerty'
+        // }
+      })
     }
   },
   created () {
-    // this.$store.dispatch('fetchData')
-    this.fetchData()
-    this.fetchCategoryData()
-    setTimeout(() => this.getPage(1), 1000)
+    // this.getPage(1)
   }
 }
 </script>

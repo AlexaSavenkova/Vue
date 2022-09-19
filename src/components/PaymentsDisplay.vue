@@ -26,7 +26,6 @@ export default {
       type: Array,
       default: () => ([])
     }
-    // show: Boolean
   }
 }
 </script>

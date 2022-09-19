@@ -1,22 +1,15 @@
-// import Vue from 'vue'
 export default {
   state: {
-    paymentsList: [],
-    // linesPerPage: 3,
-    currentPage: []
+    paymentsList: []
   },
   getters: {
     paymentsList: (state) => state.paymentsList,
     totalCost: ({ paymentsList }) => paymentsList
-      .reduce((total, { value }) => total + value, 0),
-    currentPage: (state) => state.currentPage
+      .reduce((total, { value }) => total + value, 0)
   },
   mutations: {
     SET_PAYMENTS_LIST (state, paymentsList) {
       state.paymentsList = paymentsList
-    },
-    SET_CURRENT_PAGE (state, page) {
-      state.currentPage = page
     },
     ADD_PAYMENT_DATA (state, payment) {
       state.paymentsList.push(payment)
@@ -45,19 +38,10 @@ export default {
             date: '24.03.2020',
             category: 'Food',
             value: 532
-          },
-          {
-            date: '24.04.2020',
-            category: 'Food',
-            value: 765
           }
         ]
         commit('SET_PAYMENTS_LIST', initialPaymentsList)
       }, 1000)
-    },
-    fetchPage: (context, payload) => {
-      const page = context.state.paymentsList.slice(payload.start, payload.end)
-      context.commit('SET_CURRENT_PAGE', page)
     }
   }
 }
