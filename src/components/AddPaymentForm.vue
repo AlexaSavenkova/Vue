@@ -42,13 +42,12 @@ export default {
         date: date || currentDate
       }
       this.$emit('add-payment', data)
-      this.resetForm()
-    },
-    resetForm () {
-      this.value = ''
-      this.category = ''
-      this.date = ''
     }
+  //   resetForm () {
+  //     this.value = ''
+  //     this.category = ''
+  //     this.date = ''
+  //   }
   },
   computed: {
     currentDate () {
@@ -68,6 +67,7 @@ export default {
     justify-content: flex-start;
     margin-bottom: 50px;
     margin-left: 20px;
+    margin-right: 20px;
   }
   .form {
     display: flex;

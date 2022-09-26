@@ -9,27 +9,42 @@
     <main>
       <router-view />
     </main>
+    <transition name="fade">
+      <ModalWindowAddPayment
+        v-if="showModal"
+        :settings="modalSettings"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+// import ModalWindowAddPayment from '@/components/ModalWindowAddPayment.vue'
 export default {
   name: 'App',
   components: {
+    ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */'@/components/ModalWindowAddPayment.vue')
   },
   data: () => ({
-    // page: 'dashboard'
+    showModal: false,
+    modalSettings: {}
   }),
   methods: {
-    ...mapActions(['fetchData'])
+    ...mapActions(['fetchData', 'fetchCategoryData']),
+    modalOpen (settings) {
+      this.modalSettings = settings
+      this.showModal = true
+    },
+    modalClose () {
+      this.showModal = false
+    }
   },
   mounted () {
     this.fetchData()
-    // window.addEventListener('hashchange', this.setPage)
-    // window.addEventListener('popstate', this.setPage)
-    // console.log(this.$router)
-    // console.log(this.$route)
+    this.fetchCategoryData()
+    this.$modal.EventBus.$on('show', this.modalOpen)
+    this.$modal.EventBus.$on('hide', this.modalClose)
   }
 }
 </script>
@@ -49,5 +64,11 @@ export default {
 }
 .router-link {
   margin: 0 5px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .8s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
