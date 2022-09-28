@@ -1,5 +1,6 @@
 <template>
-  <div class="pagination" v-if="totalPages > 1">
+<!--  <div class="pagination" v-if="totalPages > 1">-->
+  <div class="pagination">
     <div
       v-show="currentPageNumber > 1"
       @click="getPage(currentPageNumber-1)"

@@ -10,9 +10,15 @@
       <router-view />
     </main>
     <transition name="fade">
-      <ModalWindowAddPayment
+      <ModalWindow
         v-if="showModal"
         :settings="modalSettings"
+      />
+    </transition>
+    <transition name="fade">
+      <ContextMenu
+        v-if="showContext"
+        :settings="contextSettings"
       />
     </transition>
   </div>
@@ -20,15 +26,20 @@
 
 <script>
 import { mapActions } from 'vuex'
-// import ModalWindowAddPayment from '@/components/ModalWindowAddPayment.vue'
+import ModalWindow from '@/components/ModalWindow.vue'
+import ContextMenu from '@/components/ContextMenu'
+
 export default {
   name: 'App',
   components: {
-    ModalWindowAddPayment: () => import(/* webpackChunkName: "ModalWindow" */'@/components/ModalWindowAddPayment.vue')
+    ModalWindow,
+    ContextMenu
   },
   data: () => ({
     showModal: false,
-    modalSettings: {}
+    modalSettings: {},
+    showContext: false,
+    contextSettings: {}
   }),
   methods: {
     ...mapActions(['fetchData', 'fetchCategoryData']),
@@ -38,6 +49,13 @@ export default {
     },
     modalClose () {
       this.showModal = false
+    },
+    contextOpen (settings) {
+      this.contextSettings = settings
+      this.showContext = true
+    },
+    contextClose () {
+      this.showContext = false
     }
   },
   mounted () {
@@ -45,6 +63,8 @@ export default {
     this.fetchCategoryData()
     this.$modal.EventBus.$on('show', this.modalOpen)
     this.$modal.EventBus.$on('hide', this.modalClose)
+    this.$contextMenu.EventBus.$on('show', this.contextOpen)
+    this.$contextMenu.EventBus.$on('hide', this.contextClose)
   }
 }
 </script>

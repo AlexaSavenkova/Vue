@@ -7,7 +7,9 @@
             :categoryList="categoryList"
           />
         <Auth v-if="settings.content === 'auth'"/>
-<!--        <component :is="settings.content"/>-->
+        <EditPaymentForm v-if="settings.content === 'editPaymentForm'"
+                         :index="settings.index"
+        />
         <button @click="close" :class="$style['close-btn']">Close</button>
       </div>
     </div>
@@ -16,6 +18,7 @@
 <script>
 import AddPaymentForm from '@/components/AddPaymentForm.vue'
 import Auth from '@/components/Auth.vue'
+import EditPaymentForm from '@/components/EditPaymentForm'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
@@ -28,21 +31,25 @@ export default {
   },
   components: {
     AddPaymentForm,
-    Auth
+    Auth,
+    EditPaymentForm
   },
   computed: {
     ...mapGetters(['categoryList']),
     title () {
       return this.settings?.title || 'Modal window'
+    },
+    index () {
+      return this.settings?.index || null
     }
   },
   methods: {
     ...mapMutations(['ADD_PAYMENT_DATA']),
     addPayment (data) {
       this.ADD_PAYMENT_DATA(data)
+      this.$modal.hide()
     },
     close () {
-      // this.$emit('close')
       this.$modal.hide()
     }
   }

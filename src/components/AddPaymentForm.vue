@@ -43,11 +43,6 @@ export default {
       }
       this.$emit('add-payment', data)
     }
-  //   resetForm () {
-  //     this.value = ''
-  //     this.category = ''
-  //     this.date = ''
-  //   }
   },
   computed: {
     currentDate () {

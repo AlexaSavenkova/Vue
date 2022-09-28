@@ -1,12 +1,6 @@
 <template>
   <div>
     <h1>My personal costs: {{ totalCost }}</h1>
-<!--    <button-->
-<!--      :class="this.$style.showFormBtn"-->
-<!--      @click="addPaymentModal"-->
-<!--    >-->
-<!--      ADD NEW COST +-->
-<!--    </button>-->
     <button
       :class="this.$style.showFormBtn"
       @click="addPayment"
@@ -15,12 +9,8 @@
     </button>
     <PaymentsDisplay
       :paymentsList="currentPage"
+      :start-index="startIndex"
     />
-<!--    <ModalWindowAddPayment-->
-<!--      v-if="showModal"-->
-<!--      @close="close"-->
-<!--      :settings="modalSettings"-->
-<!--    />-->
     <Pagination
       :totalPages="totalPages"
       :currentPageNumber="currentPageNumber"
@@ -37,7 +27,7 @@
 
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
-// import ModalWindowAddPayment from '@/components/ModalWindowAddPayment.vue'
+// import ModalWindowAddPayment from '@/components/ModalWindow.vue'
 import Pagination from '@/components/Pagination.vue'
 import { mapGetters } from 'vuex'
 
@@ -45,19 +35,20 @@ export default {
   name: 'Dashboard',
   components: {
     PaymentsDisplay,
-    // ModalWindowAddPayment,
     Pagination
   },
   data: () => ({
-    // showModal: false,
-    // modalSettings: {},
     linesPerPage: 5,
     currentPageNumber: 1
   }),
   computed: {
     ...mapGetters(['paymentsList', 'totalCost']),
+    startIndex () {
+      return this.linesPerPage * (this.currentPageNumber - 1)
+    },
     currentPage () {
-      const start = this.linesPerPage * (this.currentPageNumber - 1)
+      // const start = this.linesPerPage * (this.currentPageNumber - 1)
+      const start = this.startIndex
       const end = start + this.linesPerPage
       return this.paymentsList.slice(start, end)
     },
@@ -69,27 +60,12 @@ export default {
     getPage (number) {
       this.currentPageNumber = number
     },
-    // addPaymentModal () {
-    //   this.showModal = true
-    //   this.modalSettings = {
-    //     title: 'Add New Payment',
-    //     content: 'addPaymentForm'
-    //   }
-    // },
     addPayment () {
       this.$modal.show({ title: 'Add New Payment', content: 'addPaymentForm' })
     },
     authModal () {
-      // this.showModal = true
-      // this.modalSettings = {
-      //   title: 'Authorization',
-      //   content: 'auth'
-      // }
       this.$modal.show({ title: 'Authorization', content: 'auth' })
     }
-    // close () {
-    //   this.showModal = false
-    // }
   }
 }
 </script>

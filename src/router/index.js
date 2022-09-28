@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Dashboard from '../../pages/Dashboard'
-// import About from '../../pages/About'
-// import NotFound from '../../pages/NotFound'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -32,26 +29,11 @@ const router = new VueRouter({
       // component: About
       component: () => import(/* webpackChunkName: "about" */'../../pages/About.vue')
     },
-    // {
-    //   path: '/add/payment',
-    //   name: 'add_payment',
-    //   component: AddPayment,
-    //   children: [
-    //     {
-    //       path: ':category',
-    //       component: AddPayment
-    //     }
-    //   ]
-    // },
     {
       path: '/notfound',
       name: 'notfound',
       component: () => import(/* webpackChunkName: "notfound" */'../../pages/NotFound.vue')
     },
-    // {
-    //   path: '*',
-    //   component: NotFound
-    // }
     {
       path: '*',
       // redirect: '/notfound'
