@@ -9,27 +9,62 @@
     <main>
       <router-view />
     </main>
+    <transition name="fade">
+      <ModalWindow
+        v-if="showModal"
+        :settings="modalSettings"
+      />
+    </transition>
+    <transition name="fade">
+      <ContextMenu
+        v-if="showContext"
+        :settings="contextSettings"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import ModalWindow from '@/components/ModalWindow.vue'
+import ContextMenu from '@/components/ContextMenu'
+
 export default {
   name: 'App',
   components: {
+    ModalWindow,
+    ContextMenu
   },
   data: () => ({
-    // page: 'dashboard'
+    showModal: false,
+    modalSettings: {},
+    showContext: false,
+    contextSettings: {}
   }),
   methods: {
-    ...mapActions(['fetchData'])
+    ...mapActions(['fetchData', 'fetchCategoryData']),
+    modalOpen (settings) {
+      this.modalSettings = settings
+      this.showModal = true
+    },
+    modalClose () {
+      this.showModal = false
+    },
+    contextOpen (settings) {
+      this.contextSettings = settings
+      this.showContext = true
+    },
+    contextClose () {
+      this.showContext = false
+    }
   },
   mounted () {
     this.fetchData()
-    // window.addEventListener('hashchange', this.setPage)
-    // window.addEventListener('popstate', this.setPage)
-    // console.log(this.$router)
-    // console.log(this.$route)
+    this.fetchCategoryData()
+    this.$modal.EventBus.$on('show', this.modalOpen)
+    this.$modal.EventBus.$on('hide', this.modalClose)
+    this.$contextMenu.EventBus.$on('show', this.contextOpen)
+    this.$contextMenu.EventBus.$on('hide', this.contextClose)
   }
 }
 </script>
@@ -49,5 +84,11 @@ export default {
 }
 .router-link {
   margin: 0 5px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .8s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

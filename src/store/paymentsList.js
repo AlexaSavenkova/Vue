@@ -13,12 +13,15 @@ export default {
     },
     ADD_PAYMENT_DATA (state, payment) {
       state.paymentsList.push(payment)
+    },
+    DELETE_PAYMENT (state, index) {
+      state.paymentsList.splice(index, 1)
+    },
+    EDIT_PAYMENTS (state, data) {
+      state.paymentsList[data.index] = data.editedPayment
+      state.paymentsList = [...state.paymentsList]
+      // Vue.set(this.state.paymentsList, data.index, data.editedPayment)
     }
-    // EDIT_PAYMENTS (state, editedPayment) {
-    //   state.paymentsList[1] = editedPayment
-    //   state.paymentsList = [...state.paymentsList]
-    //   Vue.set(this.state.paymentsList, 1, editedPayment)
-    // }
   },
   actions: {
     fetchData: ({ commit }) => {

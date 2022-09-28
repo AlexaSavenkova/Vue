@@ -3,24 +3,32 @@
     <h1>My personal costs: {{ totalCost }}</h1>
     <button
       :class="this.$style.showFormBtn"
-      @click="goToAddPaymentPage"
+      @click="addPayment"
     >
       ADD NEW COST +
     </button>
     <PaymentsDisplay
       :paymentsList="currentPage"
+      :start-index="startIndex"
     />
     <Pagination
       :totalPages="totalPages"
       :currentPageNumber="currentPageNumber"
       @get-page="getPage"
     />
+    <button
+      :class="this.$style.showFormBtn"
+      @click="authModal"
+    >
+      AUTH
+    </button>
   </div>
 </template>
 
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
-import Pagination from '@/components/Pagination'
+// import ModalWindowAddPayment from '@/components/ModalWindow.vue'
+import Pagination from '@/components/Pagination.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -30,14 +38,17 @@ export default {
     Pagination
   },
   data: () => ({
-    showForm: false,
     linesPerPage: 5,
     currentPageNumber: 1
   }),
   computed: {
     ...mapGetters(['paymentsList', 'totalCost']),
+    startIndex () {
+      return this.linesPerPage * (this.currentPageNumber - 1)
+    },
     currentPage () {
-      const start = this.linesPerPage * (this.currentPageNumber - 1)
+      // const start = this.linesPerPage * (this.currentPageNumber - 1)
+      const start = this.startIndex
       const end = start + this.linesPerPage
       return this.paymentsList.slice(start, end)
     },
@@ -49,17 +60,12 @@ export default {
     getPage (number) {
       this.currentPageNumber = number
     },
-    goToAddPaymentPage () {
-      this.$router.push({
-        name: 'add_payment'
-        // params: {
-        //   a: 'qwerty'
-        // }
-      })
+    addPayment () {
+      this.$modal.show({ title: 'Add New Payment', content: 'addPaymentForm' })
+    },
+    authModal () {
+      this.$modal.show({ title: 'Authorization', content: 'auth' })
     }
-  },
-  created () {
-    // this.getPage(1)
   }
 }
 </script>
