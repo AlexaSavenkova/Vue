@@ -4,6 +4,7 @@
       <nav>
         <router-link to="dashboard" class="router-link">Dashboard</router-link>
         <router-link to="about" class="router-link">About</router-link>
+        <router-link to="calculator" class="router-link">Calculator</router-link>
       </nav>
     </header>
     <main>
