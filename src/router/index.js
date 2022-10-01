@@ -35,6 +35,11 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "notfound" */'../../pages/NotFound.vue')
     },
     {
+      path: '/calculator',
+      name: 'calculator',
+      component: () => import(/* webpackChunkName: "calculator" */'../../pages/Calc')
+    },
+    {
       path: '*',
       // redirect: '/notfound'
       redirect: {
@@ -55,6 +60,7 @@ const titles = {
   dashboard: 'Dashboard',
   about: 'About',
   add_payment: 'Add Payment',
+  calculator: 'Calculator',
   notfound: 'Not Found'
 }
 router.afterEach((to) => {
