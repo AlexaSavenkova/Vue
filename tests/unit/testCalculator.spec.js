@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Calc from '../../pages/Calc'
+import Calc from '../../src/pages/Calc'
 
 describe('Calculator testing', () => {
   test('Test first operator', () => {

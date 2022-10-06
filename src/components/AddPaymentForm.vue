@@ -1,29 +1,23 @@
 <template>
-  <div :class="this.$style.main">
-    <div :class="this.$style.form">
-      <input type="text" placeholder="Payment Amount" v-model.number="value">
-      <select v-model="category">
-        <option value="" disabled selected hidden>Payment Description</option>
-        <option
-          v-for="category of categoryList"
-          :value="category"
-          :key="category"
-          placeholder="Payment Description"
-        >
-          {{ category}}
-        </option>
-      </select>
-      <input type="text" placeholder="Payment date" v-model="date">
-      <button @click="addPayment" :class="this.$style.addBtn">ADD + </button>
-    </div>
-  </div>
+  <v-card class="text-left pa-8">
+    <v-text-field v-model="date" label="Date"/>
+    <v-select
+      v-model="category"
+      label="Category"
+      :items="categoryList"
+    />
+    <v-text-field v-model.number="value" label="Payment Amount"/>
+    <v-btn @click="addPayment">ADD</v-btn>
+  </v-card>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'AddPaymentForm',
   data: () => ({
-    value: '',
+    value: 0,
     category: '',
     date: ''
   }),
@@ -34,6 +28,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['ADD_PAYMENT_DATA']),
     addPayment () {
       const { value, category, date, currentDate } = this
       const data = {
@@ -41,7 +36,11 @@ export default {
         category,
         date: date || currentDate
       }
-      this.$emit('add-payment', data)
+      this.ADD_PAYMENT_DATA(data)
+      this.$emit('payment-added')
+      this.date = ''
+      this.category = ''
+      this.value = 0
     }
   },
   computed: {
@@ -55,25 +54,3 @@ export default {
   }
 }
 </script>
-
-<style module>
-  .main {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 50px;
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-  .form {
-    display: flex;
-    flex-direction: column;
-    width: 400px;
-    gap: 10px;
-  }
-  .addBtn {
-    width: 80px;
-    align-self: flex-end;
-    background-color: #5ea899;
-    color: white;
-  }
-</style>

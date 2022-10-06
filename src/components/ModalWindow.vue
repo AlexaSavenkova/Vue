@@ -2,11 +2,6 @@
     <div :class="$style.wrapper">
       <div :class="$style.content">
         <h3>{{ title }}</h3>
-          <AddPaymentForm v-if="settings.content === 'addPaymentForm'"
-            @add-payment="addPayment"
-            :categoryList="categoryList"
-          />
-        <Auth v-if="settings.content === 'auth'"/>
         <EditPaymentForm v-if="settings.content === 'editPaymentForm'"
                          :index="settings.index"
         />
@@ -17,7 +12,6 @@
 
 <script>
 import AddPaymentForm from '@/components/AddPaymentForm.vue'
-import Auth from '@/components/Auth.vue'
 import EditPaymentForm from '@/components/EditPaymentForm'
 import { mapGetters, mapMutations } from 'vuex'
 
@@ -31,7 +25,6 @@ export default {
   },
   components: {
     AddPaymentForm,
-    Auth,
     EditPaymentForm
   },
   computed: {
