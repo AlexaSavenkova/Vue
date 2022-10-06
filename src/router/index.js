@@ -9,35 +9,30 @@ const router = new VueRouter({
       path: '/',
       name: 'root',
       redirect: {
-        name: 'dashboard'
+        name: 'about'
       }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       // component: Dashboard
-      component: () => import(/* webpackChunkName: "dashboard" */'../../pages/Dashboard.vue')
+      component: () => import(/* webpackChunkName: "dashboard" */'../pages/Dashboard.vue')
     },
-    // {
-    //   path: '/dashboard/:page',
-    //   name: 'dashboard',
-    //   component: Dashboard
-    // },
     {
       path: '/about*',
       name: 'about',
       // component: About
-      component: () => import(/* webpackChunkName: "about" */'../../pages/About.vue')
+      component: () => import(/* webpackChunkName: "about" */'../pages/About.vue')
     },
     {
       path: '/notfound',
       name: 'notfound',
-      component: () => import(/* webpackChunkName: "notfound" */'../../pages/NotFound.vue')
+      component: () => import(/* webpackChunkName: "notfound" */'../pages/NotFound.vue')
     },
     {
       path: '/calculator',
       name: 'calculator',
-      component: () => import(/* webpackChunkName: "calculator" */'../../pages/Calc')
+      component: () => import(/* webpackChunkName: "calculator" */'../pages/Calc')
     },
     {
       path: '*',

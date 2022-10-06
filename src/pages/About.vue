@@ -1,5 +1,5 @@
 <template>
-  <div>About</div>
+  <h1>Welcome to My Personal Costs Application !</h1>
 </template>
 
 <script>

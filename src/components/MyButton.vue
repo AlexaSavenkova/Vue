@@ -1,13 +1,14 @@
 <template>
   <div>
-    <input type="text">
-    <input type="text">
+    <slot name="prepend"/>
+    <slot/>
+    <slot name="prepend"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Auth'
+  name: 'MyButton'
 }
 </script>
 
