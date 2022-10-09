@@ -30,11 +30,6 @@ const router = new VueRouter({
       component: () => import(/* webpackChunkName: "notfound" */'../pages/NotFound.vue')
     },
     {
-      path: '/calculator',
-      name: 'calculator',
-      component: () => import(/* webpackChunkName: "calculator" */'../pages/Calc')
-    },
-    {
       path: '*',
       // redirect: '/notfound'
       redirect: {

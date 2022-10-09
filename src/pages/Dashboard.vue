@@ -34,12 +34,6 @@
             :currentPageNumber="currentPageNumber"
             @get-page="getPage"
           />
-          <transition name="fade">
-            <ContextMenu
-              v-if="showContext"
-              :settings="contextSettings"
-            />
-          </transition>
         </div>
       </v-col>
       <v-col>
@@ -51,7 +45,6 @@
 
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
-import ContextMenu from '@/components/ContextMenu'
 import Pagination from '@/components/Pagination.vue'
 import AddPaymentForm from '@/components/AddPaymentForm'
 import Diagram from '@/components/Diagram'
@@ -63,16 +56,13 @@ export default {
     Diagram,
     AddPaymentForm,
     PaymentsDisplay,
-    ContextMenu,
     Pagination
   },
   data: () => ({
     linesPerPage: 5,
     currentPageNumber: 1,
     showAddPaymentForm: false,
-    // modalSettings: {},
     showContext: false
-    // contextSettings: {}
   }),
   computed: {
     ...mapGetters(['paymentsList', 'totalCost', 'categoryList']),
@@ -92,26 +82,6 @@ export default {
     getPage (number) {
       this.currentPageNumber = number
     }
-    // contextOpen (settings) {
-    //   this.contextSettings = settings
-    //   this.showContext = true
-    // },
-    // contextClose () {
-    //   this.showContext = false
-    // }
-  },
-  mounted () {
-    // this.$contextMenu.EventBus.$on('show', this.contextOpen)
-    // this.$contextMenu.EventBus.$on('hide', this.contextClose)
   }
 }
 </script>
-
-<style lang="scss" module>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .8s;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
-</style>
