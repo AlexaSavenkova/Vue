@@ -29,11 +29,19 @@
             :paymentsList="currentPage"
             :start-index="startIndex"
           />
-          <Pagination
-            :totalPages="totalPages"
-            :currentPageNumber="currentPageNumber"
-            @get-page="getPage"
-          />
+<!--          <Pagination-->
+<!--            :totalPages="totalPages"-->
+<!--            :currentPageNumber="currentPageNumber"-->
+<!--            @get-page="getPage"-->
+<!--          />-->
+          <div class="text-center">
+            <v-pagination
+              v-model="currentPageNumber"
+              :length="totalPages"
+              :total-visible="7"
+              @input="getPage"
+            ></v-pagination>
+          </div>
         </div>
       </v-col>
       <v-col>
@@ -45,7 +53,6 @@
 
 <script>
 import PaymentsDisplay from '@/components/PaymentsDisplay.vue'
-import Pagination from '@/components/Pagination.vue'
 import AddPaymentForm from '@/components/AddPaymentForm'
 import Diagram from '@/components/Diagram'
 import { mapGetters } from 'vuex'
@@ -55,8 +62,7 @@ export default {
   components: {
     Diagram,
     AddPaymentForm,
-    PaymentsDisplay,
-    Pagination
+    PaymentsDisplay
   },
   data: () => ({
     linesPerPage: 5,

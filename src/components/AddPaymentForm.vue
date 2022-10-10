@@ -1,13 +1,42 @@
 <template>
   <v-card class="text-left pa-8">
-    <v-text-field v-model="date" label="Date"/>
+    <v-menu
+      v-model="datePicker"
+      :close-on-content-click="false"
+      :nudge-right="40"
+      transition="scale-transition"
+      offset-y
+      min-width="auto"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-text-field
+          v-model="date"
+          label="Date"
+          readonly
+          v-bind="attrs"
+          v-on="on"
+        ></v-text-field>
+      </template>
+      <v-date-picker
+        v-model="date"
+        @input="datePicker = false"
+      ></v-date-picker>
+    </v-menu>
     <v-select
       v-model="category"
       label="Category"
       :items="categoryList"
     />
-    <v-text-field v-model.number="value" label="Payment Amount"/>
-    <v-btn @click="addPayment">ADD</v-btn>
+    <v-text-field
+      v-model.number="value"
+      label="Payment Amount"
+    />
+    <v-btn
+      @click="addPayment"
+      :disabled="!validated"
+    >
+      ADD
+    </v-btn>
   </v-card>
 </template>
 
@@ -19,7 +48,8 @@ export default {
   data: () => ({
     value: 0,
     category: '',
-    date: ''
+    date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    datePicker: false
   }),
   props: {
     categoryList: {
@@ -27,29 +57,34 @@ export default {
       default: () => []
     }
   },
+  computed: {
+    validated () {
+      if (this.category === '') {
+        return false
+      }
+      if (!isFinite(this.value) || this.value <= 0) {
+        return false
+      }
+      return true
+    }
+  },
   methods: {
     ...mapMutations(['ADD_PAYMENT_DATA']),
     addPayment () {
-      const { value, category, date, currentDate } = this
+      const { value, category, date } = this
       const data = {
         value,
         category,
-        date: date || currentDate
+        date
       }
       this.ADD_PAYMENT_DATA(data)
       this.$emit('payment-added')
-      this.date = ''
+      this.resetData()
+    },
+    resetData () {
+      this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
       this.category = ''
       this.value = 0
-    }
-  },
-  computed: {
-    currentDate () {
-      const currentDate = new Date()
-      const day = currentDate.getDate()
-      const month = currentDate.getMonth() + 1
-      const year = currentDate.getFullYear()
-      return `${day}.${month}.${year}`
     }
   }
 }

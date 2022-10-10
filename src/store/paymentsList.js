@@ -28,17 +28,17 @@ export default {
       setTimeout(() => {
         const initialPaymentsList = [
           {
-            date: '28.03.2020',
+            date: '2020-03-28',
             category: 'Food',
             value: 169
           },
           {
-            date: '24.03.2020',
+            date: '2020-03-24',
             category: 'Transport',
             value: 360
           },
           {
-            date: '24.03.2020',
+            date: '2020-03-24',
             category: 'Food',
             value: 532
           }
