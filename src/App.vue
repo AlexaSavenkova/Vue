@@ -1,46 +1,39 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <v-app>
+    <v-app-bar
+      app
+      color="teal"
+      dark
+      flat
+    >
+      <div class="d-flex align-center">
+        <v-btn to="/dashboard" :ripple="false" plain>Dashboard</v-btn>
+        <v-btn to="/about" :ripple="false" plain>About</v-btn>
+      </div>
+      <v-spacer></v-spacer>
+    </v-app-bar>
 
-    <Calc />
-<!--    <Calc v-if="show" :key="1"/>-->
-<!--    <Calc v-if="!show" :key="2"/>-->
-<!--    <button @click="show=!show">click</button>-->
-  </div>
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Calc from '@/components/Calc.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld,
-    Calc
-  },
   data: () => ({
-    counter: 0,
-    txt: '',
-    show: true
   }),
   methods: {
-    increase (step, event) {
-      console.log(event)
-      this.counter += step
-    }
+    ...mapActions(['fetchData', 'fetchCategoryData'])
+  },
+  mounted () {
+    this.fetchData()
+    this.fetchCategoryData()
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss" scoped>
 </style>

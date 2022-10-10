@@ -1,5 +1,6 @@
 <template>
   <v-card class="text-left pa-8">
+<!--    <v-text-field v-model="date" label="Date"/>-->
     <v-menu
       v-model="datePicker"
       :close-on-content-click="false"
@@ -27,41 +28,31 @@
       label="Category"
       :items="categoryList"
     />
-    <v-text-field
-      v-model.number="value"
-      label="Payment Amount"
-    />
-    <v-btn
-      @click="addPayment"
-      :disabled="!validated"
-    >
-      ADD
-    </v-btn>
+    <v-text-field v-model.number="value" label="Payment Amount"/>
+    <v-btn @click="savePayment" :disabled="!validated">Save</v-btn>
   </v-card>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-  name: 'AddPaymentForm',
+  name: 'EditPaymentForm',
   data: () => ({
     value: 0,
     category: '',
-    date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    date: '',
     datePicker: false
   }),
   props: {
-    categoryList: {
-      type: Array,
-      default: () => []
+    index: {
+      type: Number,
+      required: true
     }
   },
   computed: {
+    ...mapGetters(['categoryList', 'paymentsList']),
     validated () {
-      if (this.category === '') {
-        return false
-      }
       if (!isFinite(this.value) || this.value <= 0) {
         return false
       }
@@ -69,23 +60,27 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['ADD_PAYMENT_DATA']),
-    addPayment () {
-      const { value, category, date } = this
-      const data = {
+    ...mapMutations(['EDIT_PAYMENTS']),
+    savePayment () {
+      const { value, category, date, index } = this
+      const editedPayment = {
         value,
         category,
         date
       }
-      this.ADD_PAYMENT_DATA(data)
-      this.$emit('payment-added')
-      this.resetData()
-    },
-    resetData () {
-      this.date = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
-      this.category = ''
-      this.value = 0
+      const data = {
+        index,
+        editedPayment
+      }
+      this.EDIT_PAYMENTS(data)
+      this.$emit('payment-edited')
+      this.$destroy()
     }
+  },
+  mounted () {
+    this.value = this.paymentsList[this.index].value
+    this.category = this.paymentsList[this.index].category
+    this.date = this.paymentsList[this.index].date
   }
 }
 </script>

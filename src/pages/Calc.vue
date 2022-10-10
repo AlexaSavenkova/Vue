@@ -2,8 +2,8 @@
   <div>
     <div class="error" v-if="error">{{ error }}</div>
     <div class="main">
-      <input type="number" v-model.number="op1">
-      <input type="number" v-model.number="op2">
+      <input type="number" v-model.number="op1" name="op1">
+      <input type="number" v-model.number="op2" name="op2">
       = {{ result }}
     </div>
     <br>
@@ -12,16 +12,11 @@
         v-for="operation of operations"
         @click="calculate(operation)"
         :key="operation"
+        :name="operation"
         :disabled="op1==='' || op2===''"
       >
         {{operation}}
       </button>
-<!--      <button @click="calculate('+')" title="Сумма">+</button>-->
-<!--      <button @click="calculate('-')" title="Вычитание">-</button>-->
-<!--      <button @click="calculate('*')" title="Умножение">*</button>-->
-<!--      <button @click="calculate('/')" title="Деление">/</button>-->
-<!--      <button @click="calculate('^')" title="Степень">^</button>-->
-<!--      <button @click="calculate('//')" title="Целочисленное деление">//</button>-->
     </div>
     <br>
     <input type="checkbox" id="checkbox" v-model="showKeyboard">
@@ -36,12 +31,14 @@
       <button
         v-for="n in 10"
         :key="n"
+        :name="n-1"
         @click="inputOperand(n-1)"
       >
         {{ n-1 }}
       </button>
       <button
         @click="backspase"
+        name="backspase"
       >
         &larr;
       </button>
@@ -119,7 +116,6 @@ export default {
       this.result = Math.trunc(op1 / op2)
     },
     inputOperand (value) {
-      console.log(value)
       this[this.selectedOperand] = Number('' + this[this.selectedOperand] + value)
     },
     backspase () {
