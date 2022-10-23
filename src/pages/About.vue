@@ -6,6 +6,7 @@
       <li>VueRouter for routing</li>
       <li>Vuex as storage</li>
       <li>Vuetify for styling</li>
+      <li>vue-chartjs for diagram</li>
     </ul>
   </div>
 </template>
