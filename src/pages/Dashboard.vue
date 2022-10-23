@@ -24,16 +24,11 @@
             />
           </v-card>
         </v-dialog>
-        <div>
+        <div class="payments-wraper">
           <PaymentsDisplay
             :paymentsList="currentPage"
             :start-index="startIndex"
           />
-<!--          <Pagination-->
-<!--            :totalPages="totalPages"-->
-<!--            :currentPageNumber="currentPageNumber"-->
-<!--            @get-page="getPage"-->
-<!--          />-->
           <div class="text-center">
             <v-pagination
               v-model="currentPageNumber"
@@ -91,3 +86,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .payments-wraper {
+    min-height: calc(100vh - 250px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+</style>

@@ -1,5 +1,13 @@
 <template>
-  <h1>Welcome to My Personal Costs Application !</h1>
+  <div>
+    <h1>Welcome to My Personal Costs Application !</h1>
+    <h3>This app used:</h3>
+    <ul>
+      <li>VueRouter for routing</li>
+      <li>Vuex as storage</li>
+      <li>Vuetify for styling</li>
+    </ul>
+  </div>
 </template>
 
 <script>
